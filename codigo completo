@@ -1,0 +1,44 @@
+int SENSOR;		// variable para almacenar valor leido de entrada A0
+#define LED 13		// LED en pin digital 2
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(7,6,5,4,3,2); //pantalla lcd
+
+
+void setup(){
+  pinMode(LED, OUTPUT);		// pin digital 2 como salida
+  Serial.begin(9600);	
+  lcd.begin(16, 2);
+}
+
+void loop(){
+  SENSOR = analogRead(A0);	// lee y almacena valor leido de entrada A0
+  if (SENSOR > 360){		// si hay presencia de agua
+    digitalWrite(LED, HIGH);	// enciende LED
+     SENSOR = analogRead(A0);	// lee y almacena en variable valor leido de entrada A0
+  Serial.println(SENSOR);	// muestra en monitor serie
+  delay(1000);			// demora de 1 segundo
+
+
+   lcd.setCursor(0, 0);
+  lcd.print("PELIGRO!!!!!!");
+lcd.setCursor(0, 1);
+  lcd.print("INUNDACION:");
+  lcd.setCursor(12, 1);
+lcd.print(SENSOR);
+
+
+
+  }
+  else{
+    digitalWrite(LED, LOW);	// si no hay presencia de agua apaga LED
+    lcd.setCursor(0, 0);
+    lcd.print("Nivel de agua");
+    lcd.setCursor(0, 1);
+    lcd.print("Normal: ");
+    lcd.setCursor(12, 1);
+    lcd.print(SENSOR);
+  }
+  
+  delay(1000);			// demora de 1 segundo
+}
